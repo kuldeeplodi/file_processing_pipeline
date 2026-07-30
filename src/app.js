@@ -2,6 +2,7 @@ const express = require("express");
 const upload = require("./middleware/upload")
 const cors = require("cors")
 const app = express();
+const uploadRoutes = require("./routes/uploadRoutes")
 
 app.use(express.json());
 app.use(express.urlencoded())
@@ -11,11 +12,6 @@ app.get("/", (req, res) => {
     res.send("Server Running");
 });
 
-app.post("/upload", upload.single("file"), (req, res) => {
-    console.log(req.body);
-    console.log(req.file);
-    return res.redirect("/")
-
-})
+app.use("/api", uploadRoutes);
 
 module.exports = app;

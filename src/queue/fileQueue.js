@@ -8,4 +8,6 @@ const queue = new Queue("FileQueue", {
 });  // FileQueue ? It's just the queue name.
 
 
-module, exports = queue;
+module.exports = queue;
+
+

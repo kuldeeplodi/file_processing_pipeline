@@ -1,5 +1,5 @@
 const Job = require("../models/job")
-
+const fileQueue = require("../queue/fileQueue")
 
 const uploadFile = async (req, res) => {
     const File = req.file;
@@ -15,6 +15,10 @@ const uploadFile = async (req, res) => {
     const job = await Job.create({
         filename: File.filename,
         fileType,
+    })
+
+    await fileQueue.add("process-file", {
+        jobId: job._id,
     })
 
     return res.status(201).json({
@@ -35,6 +39,8 @@ const getJobStatus = async (req, res) => {
             message: "Job not found",
         })
     }
+
+
 
     return res.json({
         jobId: job._id,

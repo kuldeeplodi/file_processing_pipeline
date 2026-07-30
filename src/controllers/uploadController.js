@@ -15,11 +15,20 @@ const uploadFile = async (req, res) => {
     const job = await Job.create({
         filename: File.filename,
         fileType,
+        path: File.path,
     })
 
     await fileQueue.add("process-file", {
         jobId: job._id,
-    })
+    },
+        {
+            attempts: 3,
+            backoff: {
+                type: "exponential",
+                delay: 2000,
+            },
+        }
+    )
 
     return res.status(201).json({
         jobId: job._id,

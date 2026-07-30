@@ -11,6 +11,10 @@ const jobSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        path: {
+            type: String,
+            required: true,
+        },
         status: {
             type: String,
             enum: ["QUEUED", "PROCESSING", "DONE", "FAILED"],

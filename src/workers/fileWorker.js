@@ -1,9 +1,10 @@
 const { Worker } = require("bullmq")
-
+const { processPDF } = require("../services/pdfService")
 const connection = require("../queue/connection")
 const connectDB = require("../config/db")
 const Job = require("../models/job")
-const { processImage } = require("../services/imageService");
+const { processImage } = require("../services/imageService")
+const { processText } = require("../services/textService")
 
 const startWorker = async () => {
     await connectDB();
@@ -34,6 +35,28 @@ const startWorker = async () => {
                     );
 
                     console.log("Image processed:", result);
+                }
+                else if (dbJob.fileType === "application/pdf") {
+                    const output = await processPDF(dbJob.path, dbJob.filename);
+
+                    console.log("PDF processed:", output);
+
+                    dbJob.outputUrl = output;
+
+                    await dbJob.save();
+                }
+                else if (dbJob.fileType === "text/plain") {
+
+                    const output = await processText(
+                        dbJob.path,
+                        dbJob.filename
+                    );
+
+                    console.log("Text processed:", output);
+
+                    dbJob.outputUrl = output;
+                    await dbJob.save();
+
                 }
 
                 dbJob.status = "DONE";

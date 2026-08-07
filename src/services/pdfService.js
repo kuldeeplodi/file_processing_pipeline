@@ -1,6 +1,7 @@
 const { PDFParse } = require("pdf-parse");
 const fs = require("fs");
 const path = require("path");
+const { uploadFile } = require("../services/cloudinaryService");
 
 async function processPDF(filePath, filename) {
     // Read uploaded PDF
@@ -23,8 +24,8 @@ async function processPDF(filePath, filename) {
 
     // Clean up parser resources
     await parser.destroy();
-
-    return outputFile;
+    const uploadedUrl = await uploadFile(outputFile);
+    return uploadedUrl;
 }
 
 module.exports = {

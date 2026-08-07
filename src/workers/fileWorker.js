@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { Worker } = require("bullmq")
 const { processPDF } = require("../services/pdfService")
 const connection = require("../queue/connection")
@@ -29,12 +30,14 @@ const startWorker = async () => {
                 let result;
 
                 if (dbJob.fileType.startsWith("image/")) {
-                    result = await processImage(
+                    const output = await processImage(
                         dbJob.path,
                         dbJob.filename
                     );
+                    dbJob.outputUrl = output.medium;
+                    await dbJob.save();
 
-                    console.log("Image processed:", result);
+                    console.log("Image processed:", output);
                 }
                 else if (dbJob.fileType === "application/pdf") {
                     const output = await processPDF(dbJob.path, dbJob.filename);

@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { uploadFile } = require("../services/cloudinaryService");
 
 async function processText(filePath, filename) {
     // Read text file
@@ -33,7 +34,8 @@ async function processText(filePath, filename) {
         JSON.stringify(frequency, null, 2)
     );
 
-    return outputFile;
+    const uploadedUrl = await uploadFile(outputFile);
+    return uploadedUrl;
 }
 
 module.exports = {

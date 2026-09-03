@@ -17,7 +17,7 @@ const uploadFile = async (req, res) => {
         fileType,
         path: File.path,
     })
-
+    //  queue the job for processing
     await fileQueue.add("process-file", {
         jobId: job._id,
     },

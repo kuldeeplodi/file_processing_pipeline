@@ -2,7 +2,7 @@ const { Queue } = require("bullmq")
 
 const connection = require("./connection")
 
-
+// Create a queue named "FileQueue" with the Redis connection
 const queue = new Queue("FileQueue", {
     connection,
 });  // FileQueue ? It's just the queue name.

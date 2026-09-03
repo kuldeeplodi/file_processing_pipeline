@@ -3,6 +3,7 @@ const path = require("path");
 const fs = require("fs");
 const Job = require("../models/job");
 const { uploadFile } = require("../services/cloudinaryService");
+const { deleteFile } = require("../utils/fileutils");
 
 async function processImage(filePath, filename) {
     const outputDir = path.join(process.cwd(), "processed");
@@ -27,6 +28,8 @@ async function processImage(filePath, filename) {
     // Upload to Cloudinary
     // const thumbnailUrl = await uploadFile(thumbnail);
     const mediumUrl = await uploadFile(medium);
+    deleteFile(medium);
+
     // const largeUrl = await uploadFile(large);
 
 

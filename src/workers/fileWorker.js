@@ -6,6 +6,7 @@ const connectDB = require("../config/db")
 const Job = require("../models/job")
 const { processImage } = require("../services/imageService")
 const { processText } = require("../services/textService")
+const { deleteFile } = require("../utils/fileutils");
 
 const startWorker = async () => {
     await connectDB();
@@ -35,6 +36,8 @@ const startWorker = async () => {
                         dbJob.filename
                     );
                     dbJob.outputUrl = output.medium;
+                    deleteFile(dbJob.path);
+
                     await dbJob.save();
 
                     console.log("Image processed:", output);
@@ -45,6 +48,8 @@ const startWorker = async () => {
                     console.log("PDF processed:", output);
 
                     dbJob.outputUrl = output;
+                    deleteFile(dbJob.path);
+
 
                     await dbJob.save();
                 }
@@ -58,6 +63,8 @@ const startWorker = async () => {
                     console.log("Text processed:", output);
 
                     dbJob.outputUrl = output;
+                    deleteFile(dbJob.path);
+
                     await dbJob.save();
 
                 }

@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { uploadFile } = require("../services/cloudinaryService");
+const { deleteFile } = require("../utils/fileutils");
 
 async function processText(filePath, filename) {
     // Read text file
@@ -35,6 +36,8 @@ async function processText(filePath, filename) {
     );
 
     const uploadedUrl = await uploadFile(outputFile);
+    deleteFile(outputFile);
+
     return uploadedUrl;
 }
 

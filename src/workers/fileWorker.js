@@ -73,7 +73,11 @@ const startWorker = async () => {
                 dbJob.processedAt = new Date();
                 await dbJob.save();
 
-                return result;
+                return {
+                    jobId: dbJob._id,
+                    status: dbJob.status,
+                    outputUrl: dbJob.outputUrl,
+                };
             } catch (error) {
                 if (dbJob) {
                     dbJob.status = "FAILED";

@@ -1,6 +1,6 @@
 const { Redis } = require("ioredis")
 
-const connection = new Redis();
+const connection = new Redis(process.env.REDIS_URL);
 
 
 // Handle Redis connection events

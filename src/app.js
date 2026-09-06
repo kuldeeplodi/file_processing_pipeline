@@ -14,8 +14,12 @@ app.use(
 );
 
 app.get("/", (req, res) => {
-    res.send("Server Running");
+    res.json({
+        status: "ok",
+        service: "File Processing Pipeline"
+    });
 });
+
 
 app.use("/api", uploadRoutes);
 
